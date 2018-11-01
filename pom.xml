@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.vorpal.sudoku</groupId>
+    <artifactId>sudoku-cp</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>sudoku_cp</name>
+    <url>https://github.com/sraaphorst/sudoku_cp</url>
+    <description>
+        A Sudoku solver that models a Sudoku board as a constraint program and then solves it using Choco Solver.
+    </description>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Sebastian Raaphorst</name>
+            <email>sraaphorst@gmail.com</email>
+            <id>sraaphorst</id>
+        </developer>
+    </developers>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.build.timestamp.format>yyyy</maven.build.timestamp.format>
+        <choco.version>4.0.9</choco.version>
+    </properties>
+
+    <scm>
+        <url>https://github.com/sraaphorst/sudoku_cp</url>
+        <connection>scm:git:git://github.com/sraaphorst/sudoku_cp.git</connection>
+        <developerConnection>scm:git:git@github.com:sraaphorst/sudoku_cp.git</developerConnection>
+    </scm>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.choco-solver</groupId>
+            <artifactId>choco-solver</artifactId>
+            <version>4.0.9</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.3.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>
