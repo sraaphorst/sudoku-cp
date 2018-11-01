@@ -1,16 +1,19 @@
-/**
- * GenSudokuBoard.java
- *
- * By Sebastian Raaphorst, 2018.
- */
+// GenSudokuBoard.java
+//
+// By Sebastian Raaphorst, 2018.
 
 package com.vorpal.sudoku;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public final class GenSudokuBoard<T> {
+/**
+ * A generic Sudoku board of a specified dimensionality over a given set of symbols.
+ * @param <T>
+ */
+public class GenSudokuBoard<T> implements Serializable {
     // This is truly horrible. Why doesn't Java have pairs or tuples?
     public class Pair {
         final int x, y;
@@ -26,9 +29,6 @@ public final class GenSudokuBoard<T> {
             return pairToString(x, y);
         }
     }
-
-    // The default dimensionality of the board is 3, which indicates a normal 3*3 x 3*3 = 9 x 9 Sudoku board.
-    public static int DEFAULT_DIMENSIONALITY = 3;
 
     // The dimensionality of the board, which is the square root of the number of digits.
     private final int dimensionality;
@@ -65,14 +65,20 @@ public final class GenSudokuBoard<T> {
         if (validEntries.size() != numDigits)
             throw new IllegalArgumentException("validEntries must contain " + numDigits + " digits");
 
-        // There may be a nicer way to do this, as it's not ideal.
         board = new ArrayList<>(numDigits);
-        var empty = Collections.nCopies(numDigits, zero);
-        for (var i = 0; i < numDigits; ++i) {
-            final var row = new ArrayList<T>(numDigits);
-            row.addAll(empty);
-            board.set(i, row);
+        for (var x = 0; x < numDigits; ++x) {
+            final var empty = new ArrayList<T>(numDigits);
+            for (var y = 0; y < numDigits; ++y)
+                empty.add(y, zero);
+            board.add(empty);
         }
+    }
+
+    /**
+     * Completely clear the contents of the board, setting everything to zero.
+     */
+    public void clear() {
+        board.forEach(x -> Collections.fill(x, zero));
     }
 
     /**
@@ -97,16 +103,45 @@ public final class GenSudokuBoard<T> {
     /**
      * Set the value at a position on the board.
      * Note that this method does not check if setting the position results in a legal configuration.
+     * @param x the x coordinate
+     * @param y the y coordinate
+     * @param value the value to set
+     * @return the old value
+     */
+    public T set(final int x, final int y, final T value) {
+        return set(new Pair(x, y), value);
+    }
+
+    /**
+     * Set the value at a position on the board.
+     * Note that this method does not check if setting the position results in a legal configuration.
      * @param p the position
      * @param value the value to set
      * @return the old value
      */
     public T set(final Pair p, final T value) {
-        if (!validEntries.contains(value))
+        if (!validEntries.contains(value) && !value.equals(zero))
             throw new IllegalArgumentException("Value not legal: " + value);
         final T old = board.get(p.x).get(p.y);
         board.get(p.x).set(p.y, value);
         return old;
+    }
+
+    /**
+     * Make this board's contents the same as the supplied board.
+     * This will throw an exception if the other board doesn't have the same parameters.
+     * @param other the other board
+     */
+    public void copyFrom(final GenSudokuBoard<T> other) {
+        if (!(numDigits == other.numDigits
+              && dimensionality == other.dimensionality
+              && zero.equals(other.zero)
+              && validEntries.equals(other.validEntries)))
+            throw new IllegalArgumentException("copyFrom requires board with same parameters");
+
+        for (var x = 0; x < numDigits; ++x)
+            for (var y = 0; y < numDigits; ++y)
+                set(x, y, other.get(x, y));
     }
 
     /**
@@ -307,12 +342,14 @@ public final class GenSudokuBoard<T> {
     }
 
     /**
-     * Check a list of elements to see if it is complete.
+     * Check a list of elements to see if it is complete, i.e. every space is filled with a valid nonzero value.
      * @param lst the list of elements
      * @return true if it is complete, and false otherwise
      */
     private boolean isCompleteArea(final List<T> lst) {
-        return lst.containsAll(validEntries) && !lst.contains(zero);
+        // Since zero is not in validEntries, checking that lst does not contain zero is extraneous, but I'll
+        // leave it in as a necessary condition all the same.
+        return validEntries.containsAll(lst) && !lst.contains(zero);
     }
 
     /**
@@ -351,5 +388,22 @@ public final class GenSudokuBoard<T> {
      */
     private static String pairToString(int x, int y) {
         return String.format("(%d,%d)", x, y);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof GenSudokuBoard)) return false;
+        GenSudokuBoard<?> that = (GenSudokuBoard<?>) o;
+        return dimensionality == that.dimensionality &&
+                numDigits == that.numDigits &&
+                Objects.equals(board, that.board) &&
+                Objects.equals(validEntries, that.validEntries) &&
+                Objects.equals(zero, that.zero);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(dimensionality, numDigits, board, validEntries, zero);
     }
 }
