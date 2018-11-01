@@ -41,6 +41,7 @@
         <url>https://github.com/sraaphorst/sudoku_cp</url>
         <connection>scm:git:git://github.com/sraaphorst/sudoku_cp.git</connection>
         <developerConnection>scm:git:git@github.com:sraaphorst/sudoku_cp.git</developerConnection>
+        <tag>HEAD</tag>
     </scm>
 
     <dependencies>
@@ -56,4 +57,19 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.0</version>
+                    <configuration>
+                        <release>10</release>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 </project>
