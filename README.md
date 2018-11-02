@@ -3,7 +3,9 @@
 **Status:** Complete, verson 1.0.0.
 
 
-This is an implementation, in Java, of a Sudoku solver using constraint programming.
+This is an implementation, in Java 10, of a Sudoku solver using constraint programming.
+The intention of this project was to play around with constraint programming using
+Choco-Solver (http://www.choco-solver.org).
 
 The program supports fully generic Sudoku boards (i.e. `n^2 x n^2` boards over `n^2`
 arbitrary symbols), but has an easy-to-use implementation of the standard `9x9`
