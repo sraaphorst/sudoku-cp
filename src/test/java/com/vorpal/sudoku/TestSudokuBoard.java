@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class TestSudokuBoard {
+class TestSudokuBoard {
     private final static SudokuBoard emptyBoard      = new SudokuBoard();
     private final static SudokuBoard invalidBoard    = new SudokuBoard();
     private final static SudokuBoard validBoard      = new SudokuBoard();
@@ -40,7 +40,7 @@ public class TestSudokuBoard {
     };
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         // Set the contents for each board. Expensive and unnecessary in most cases, but it ensures consistency.
         emptyBoard.clear();
         invalidBoard.clear();
@@ -73,7 +73,7 @@ public class TestSudokuBoard {
 
     @Test
     @DisplayName("SudokuBoard.get")
-    public void getTest() {
+    void getTest() {
         for (var x = 0; x < 9; ++x)
             for (var y = 0; y < 9; ++y)
                 assertEquals(solvedBoard.get(x, y).intValue(), boardArray[x][y]);
@@ -81,12 +81,12 @@ public class TestSudokuBoard {
 
     @Test
     @DisplayName("SudokuBoard.set")
-    public void setTest() {
+    void setTest() {
         // Take the empty board and set it, coordinate by coordinate, to the solved board.
         for (var x = 0; x < 9; ++x)
             for (var y = 0; y < 9; ++y) {
                 assertEquals(emptyBoard.get(x, y).intValue(), 0);
-                assertNotEquals(emptyBoard.get(x, y).intValue(), boardArray[x][y]);
+                assertNotEquals(emptyBoard.get(x, y), boardArray[x][y]);
                 emptyBoard.set(x, y, boardArray[x][y]);
                 assertEquals(emptyBoard.get(x, y).intValue(), boardArray[x][y]);
             }

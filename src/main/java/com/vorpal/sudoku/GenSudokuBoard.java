@@ -75,6 +75,29 @@ public class GenSudokuBoard<T> implements Serializable {
     }
 
     /**
+     * Accessor for dimensionality.
+     * @return dimensionality
+     */
+    int getDimensionality() {
+        return dimensionality;
+    }
+
+    /**
+     * Accessor for zero element.
+     * @return zero
+     */
+    final T getZero() {
+        return zero;
+    }
+
+    /**
+     * Accessor for valid entries.
+     * @return immutable set of valid entries
+     */
+    final Set<T> getValidEntries() {
+        return validEntries;
+    }
+    /**
      * Completely clear the contents of the board, setting everything to zero.
      */
     public void clear() {
