@@ -11,7 +11,13 @@ import java.util.*;
 
 /**
  * Takes a GenSudoku problem, represents it as a constraint program, and then allows solving.
+ *
+ * NOTE: Intermediate steps here may not be as expected, as entries in the board are represented as integers
+ * through a map, thus being a permutation of the valid elements for the puzzle. We reverse the permutation when
+ * the solution is confirmed to be achieved, so that writing the solution to the board provides the expected
+ * final result.
  */
+@SuppressWarnings("WeakerAccess")
 public class GenSudokuCP<T> {
     // The board.
     private final GenSudokuBoard<T> sudokuBoard;
@@ -101,7 +107,8 @@ public class GenSudokuCP<T> {
         }
 
         // Now make sure there are no more solutions.
-        if (model.getSolver().solve())
+        final var moreSolutions = model.getSolver().solve();
+        if (moreSolutions)
             return false;
 
         // Translate and copy the solution to the board.

@@ -12,6 +12,7 @@ import java.util.Set;
  * This is a simplified interface for GenSudokuBoard, in the standard 9x9 configuration over the numbers
  * 1 through 9, with 0 being an indicator that a position has not yet been filled.
  */
+@SuppressWarnings("WeakerAccess")
 public final class SudokuBoard extends GenSudokuBoard<Integer> {
     private static final Set<Integer> digitSet;
     static {
@@ -20,6 +21,7 @@ public final class SudokuBoard extends GenSudokuBoard<Integer> {
         digitSet = Collections.unmodifiableSet(tmpSet);
     }
 
+    @SuppressWarnings("WeakerAccess")
     public SudokuBoard() {
         super(3, 0, digitSet);
     }

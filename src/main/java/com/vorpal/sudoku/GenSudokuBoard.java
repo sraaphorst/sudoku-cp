@@ -17,6 +17,7 @@ public class GenSudokuBoard<T> implements Serializable {
     // This is truly horrible. Why doesn't Java have pairs or tuples?
     public class Pair {
         final int x, y;
+        @SuppressWarnings("WeakerAccess")
         public Pair(int x, int y) {
             if (x < 0 || x >= numDigits || y < 0 || y >= numDigits)
                 throw new IllegalArgumentException("Illegal coordinates: " + pairToString(x, y));
@@ -100,6 +101,7 @@ public class GenSudokuBoard<T> implements Serializable {
     /**
      * Completely clear the contents of the board, setting everything to zero.
      */
+    @SuppressWarnings("WeakerAccess")
     public void clear() {
         board.forEach(x -> Collections.fill(x, zero));
     }
@@ -110,6 +112,7 @@ public class GenSudokuBoard<T> implements Serializable {
      * @param y y coordinate
      * @return the value at that position
      */
+    @SuppressWarnings("WeakerAccess")
     public T get(int x, int y) {
         return get(new Pair(x, y));
     }
@@ -119,6 +122,7 @@ public class GenSudokuBoard<T> implements Serializable {
      * @param p the coordinate pair
      * @return the value at that position
      */
+    @SuppressWarnings("WeakerAccess")
     public T get(final Pair p) {
         return board.get(p.x).get(p.y);
     }
@@ -129,10 +133,10 @@ public class GenSudokuBoard<T> implements Serializable {
      * @param x the x coordinate
      * @param y the y coordinate
      * @param value the value to set
-     * @return the old value
      */
-    public T set(final int x, final int y, final T value) {
-        return set(new Pair(x, y), value);
+    @SuppressWarnings("WeakerAccess")
+    public void set(final int x, final int y, final T value) {
+        set(new Pair(x, y), value);
     }
 
     /**
@@ -140,14 +144,12 @@ public class GenSudokuBoard<T> implements Serializable {
      * Note that this method does not check if setting the position results in a legal configuration.
      * @param p the position
      * @param value the value to set
-     * @return the old value
      */
-    public T set(final Pair p, final T value) {
+    @SuppressWarnings("WeakerAccess")
+    public void set(final Pair p, final T value) {
         if (!validEntries.contains(value) && !value.equals(zero))
             throw new IllegalArgumentException("Value not legal: " + value);
-        final T old = board.get(p.x).get(p.y);
         board.get(p.x).set(p.y, value);
-        return old;
     }
 
     /**
@@ -155,6 +157,7 @@ public class GenSudokuBoard<T> implements Serializable {
      * This will throw an exception if the other board doesn't have the same parameters.
      * @param other the other board
      */
+    @SuppressWarnings("WeakerAccess")
     public void copyFrom(final GenSudokuBoard<T> other) {
         if (!(numDigits == other.numDigits
               && dimensionality == other.dimensionality
@@ -172,6 +175,7 @@ public class GenSudokuBoard<T> implements Serializable {
      * @param row the row
      * @return true if complete, and false otherwise
      */
+    @SuppressWarnings("WeakerAccess")
     public boolean isRowComplete(final int row) {
         return checkRowProperty(row, this::isCompleteArea);
     }
@@ -181,6 +185,7 @@ public class GenSudokuBoard<T> implements Serializable {
      * @param column the column
      * @return true if complete, and false otherwise
      */
+    @SuppressWarnings("WeakerAccess")
     public boolean isColumnComplete(final int column) {
         return checkColumnProperty(column, this::isCompleteArea);
     }
@@ -191,6 +196,7 @@ public class GenSudokuBoard<T> implements Serializable {
      * @param y the y coordinate of the section
      * @return true if complete, and false otherwise
      */
+    @SuppressWarnings("WeakerAccess")
     public boolean isSectionComplete(final int x, final int y) {
         return checkSectionProperty(x, y, this::isCompleteArea);
     }
@@ -200,6 +206,7 @@ public class GenSudokuBoard<T> implements Serializable {
      * @param row the row
      * @return true if valid, and false otherwise
      */
+    @SuppressWarnings("WeakerAccess")
     public boolean isRowValid(final int row) {
         return checkRowProperty(row, this::isValidArea);
     }
@@ -209,6 +216,7 @@ public class GenSudokuBoard<T> implements Serializable {
      * @param column the column
      * @return true if valid, and false otherwise
      */
+    @SuppressWarnings("WeakerAccess")
     public boolean isColumnValid(final int column) {
         return checkColumnProperty(column, this::isValidArea);
     }
@@ -219,6 +227,7 @@ public class GenSudokuBoard<T> implements Serializable {
      * @param y the y coordinate of the section
      * @return true if valid, and false otherwise
      */
+    @SuppressWarnings("WeakerAccess")
     public boolean isSectionValid(final int x, final int y) {
         return checkSectionProperty(x, y, this::isValidArea);
     }
@@ -227,6 +236,7 @@ public class GenSudokuBoard<T> implements Serializable {
      * Check if the board is complete, i.e. all elements are valid, and there are no zero elements.
      * @return true if complete, and false otherwise
      */
+    @SuppressWarnings("WeakerAccess")
     public boolean isComplete() {
         return checkProperty(this::isCompleteArea);
     }
@@ -235,6 +245,7 @@ public class GenSudokuBoard<T> implements Serializable {
      * Check if the board is valid, i.e. there is no illegal placement of elements.
      * @return true is valid, and false otherwise
      */
+    @SuppressWarnings("WeakerAccess")
     public boolean isValid() {
         return checkProperty(this::isValidArea);
     }
@@ -243,6 +254,7 @@ public class GenSudokuBoard<T> implements Serializable {
      * Check if the board has been solved, i.e. the board is both complete and valid.
      * @return true if solved, and false otherwise
      */
+    @SuppressWarnings("WeakerAccess")
     public boolean isSolved() {
         return isComplete() && isValid();
     }
