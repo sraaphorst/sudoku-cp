@@ -1,4 +1,4 @@
-# sudoku_cp
+# Sudoku Constraint Programming with Choco-Solver
 
 **Status:** Complete, verson 1.0.0.
 
